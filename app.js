@@ -49,7 +49,7 @@ app.post("/players/", async (request, response) => {
  cricket_team (player_name,
   jersey_number,
   role)
- VALUES(${playerName},${jerseyNumber},${role});`;
+ VALUES('${playerName}','${jerseyNumber}','${role}');`;
 
   const dbResponse = await db.run(queryToAddPlayer);
   response.send("Player Added to Team");
@@ -71,16 +71,12 @@ app.put("/players/:playerId/", async (request, response) => {
   const playerDetails = request.body;
   const { playerName, jerseyNumber, role } = playerDetails;
 
-  const updatePlayer = `
-    UPDATE 
-    cricket_team
-    SET player_name=${playerName},
-  jersey_number=${jerseyNumber},
-  role=${role}
-  WHERE player_id=${playerId};
-    `;
+  const updatePlayer = ` UPDATE cricket_team
+    SET player_name ='${playerName}', jersey_number=${jerseyNumber}, role='${role}'
+    WHERE player_id=${playerId};
+  `;
   await db.run(updatePlayer);
-  response.send("Player Details Up");
+  response.send("Player Details Updated");
 });
 
 //deleting a player
